@@ -96,11 +96,8 @@ class _GameScreenState extends State<GameScreen> {
                     decoration: BoxDecoration(
                       color: Colors.lightBlueAccent,
                       borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
-                        image: AssetImage(_game.gameImg![index]),
-                        fit: BoxFit.cover,
-                      ),
                     ),
+                    child: Image.asset(_game.gameImg![index]),
                   ),
                 );
               },
