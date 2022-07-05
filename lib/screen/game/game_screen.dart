@@ -72,11 +72,11 @@ class _GameScreenState extends State<GameScreen> {
                       _game.gameImg![index] = _game.cardsList[index];
                       _game.matchCheck.add({index: _game.cardsList[index]});
                     });
-
                     if (_game.matchCheck.length == 2) {
                       if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
                         viewModel.score += 100;
                         _game.matchCheck.clear();
+                        viewModel.checkClear(context);
                       } else {
                         Future.delayed(const Duration(milliseconds: 500), () {
                           setState(() {
