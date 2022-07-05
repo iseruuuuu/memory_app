@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memory_app/screen/battle/battle_view_model.dart';
 import 'package:memory_app/screen/game/game_view_model.dart';
 import 'package:memory_app/screen/title/titie_screen.dart';
 import 'package:memory_app/screen/title/title_view_model.dart';
@@ -10,6 +11,7 @@ void main() {
       providers: [
         ChangeNotifierProvider.value(value: TitleViewModel()),
         ChangeNotifierProvider.value(value: GameViewModel()),
+        ChangeNotifierProvider.value(value: BattleViewModel()),
       ],
       child: const MyApp(),
     ),
