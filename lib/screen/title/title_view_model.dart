@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_app/screen/game/game_screen.dart';
+import '../battle/battle_screen.dart';
 
 class TitleViewModel with ChangeNotifier {
   void goToGame(BuildContext context) {
@@ -15,7 +16,7 @@ class TitleViewModel with ChangeNotifier {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const GameScreen(),
+        builder: (context) => const BattleScreen(),
       ),
     );
   }
