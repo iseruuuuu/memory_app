@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:giff_dialog/giff_dialog.dart';
 import 'package:memory_app/parts/battle/turn_text.dart';
@@ -93,79 +94,81 @@ class _BattleScreenState extends State<BattleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            RotationTransition(
-              turns: const AlwaysStoppedAnimation(180 / 360),
-              child: Row(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: CupertinoColors.extraLightBackgroundGray,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              RotationTransition(
+                turns: const AlwaysStoppedAnimation(180 / 360),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TurnText(isYourTurn: isTurn),
+                    InfoCard(title: "スコア", info: "${score1}"),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: _game.gameImg!.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _game.gameImg![index] = _game.cardsList[index];
+                          _game.matchCheck.add({index: _game.cardsList[index]});
+                        });
+                        if (_game.matchCheck.length == 2) {
+                          if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
+                            addScore();
+                            _game.matchCheck.clear();
+                            checkClear(context);
+                          } else {
+                            Future.delayed(const Duration(milliseconds: 500), () {
+                              changeTurn();
+                              setState(() {
+                                _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardPath;
+                                _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardPath;
+                                _game.matchCheck.clear();
+                              });
+                            });
+                          }
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlueAccent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Image.asset(_game.gameImg![index]),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TurnText(isYourTurn: isTurn),
-                  InfoCard(title: "スコア", info: "${score1}"),
+                  TurnText(isYourTurn: !isTurn),
+                  InfoCard(title: "スコア", info: "$score2"),
                 ],
               ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width,
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                padding: const EdgeInsets.all(16),
-                itemCount: _game.gameImg!.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _game.gameImg![index] = _game.cardsList[index];
-                        _game.matchCheck.add({index: _game.cardsList[index]});
-                      });
-                      if (_game.matchCheck.length == 2) {
-                        if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
-                          addScore();
-                          _game.matchCheck.clear();
-                          checkClear(context);
-                        } else {
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            changeTurn();
-                            setState(() {
-                              _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardPath;
-                              _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardPath;
-                              _game.matchCheck.clear();
-                            });
-                          });
-                        }
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(_game.gameImg![index]),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TurnText(isYourTurn: !isTurn),
-                InfoCard(title: "スコア", info: "$score2"),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
