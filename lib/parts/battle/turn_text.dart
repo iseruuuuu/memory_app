@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TurnText extends StatelessWidget {
@@ -15,7 +16,9 @@ class TurnText extends StatelessWidget {
       style: TextStyle(
         fontSize: 25,
         fontWeight: FontWeight.bold,
-        color: isYourTurn ? Colors.black : Colors.white,
+        color: isYourTurn
+            ? Colors.black
+            : CupertinoColors.extraLightBackgroundGray,
       ),
     );
   }
