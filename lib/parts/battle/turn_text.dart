@@ -10,14 +10,13 @@ class TurnText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isYourTurn
-        ? Container()
-        : const Text(
-            'Your Turn',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          );
+    return Text(
+      'Your Turn',
+      style: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: isYourTurn ? Colors.black : Colors.white,
+      ),
+    );
   }
 }
