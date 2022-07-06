@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_app/parts/title/title_button.dart';
 import 'package:memory_app/screen/title/title_view_model.dart';
@@ -10,6 +11,7 @@ class TitleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<TitleViewModel>();
     return Scaffold(
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,16 +27,19 @@ class TitleScreen extends StatelessWidget {
             TitleButton(
               onPressed: () => viewModel.goToGame(context),
               text: "一人モード",
+              color: Colors.lightBlueAccent,
             ),
             const SizedBox(height: 100),
             TitleButton(
               onPressed: () => viewModel.goToBattle(context),
               text: "対戦モード",
+              color: Colors.greenAccent,
             ),
             const SizedBox(height: 100),
             TitleButton(
               onPressed: () => viewModel.goToSetting(context),
               text: "設定",
+              color: Colors.yellow,
             ),
           ],
         ),
