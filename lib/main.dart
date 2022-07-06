@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memory_app/screen/battle/battle_view_model.dart';
-import 'package:memory_app/screen/game/game_view_model.dart';
 import 'package:memory_app/screen/title/titie_screen.dart';
 import 'package:memory_app/screen/title/title_view_model.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +8,6 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: TitleViewModel()),
-        ChangeNotifierProvider.value(value: GameViewModel()),
-        ChangeNotifierProvider.value(value: BattleViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -26,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
