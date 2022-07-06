@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InfoCard extends StatelessWidget {
@@ -14,8 +15,9 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(26),
-      // padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
-      decoration: const BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(
+        color: CupertinoColors.extraLightBackgroundGray,
+      ),
       child: Column(
         children: [
           Text(
