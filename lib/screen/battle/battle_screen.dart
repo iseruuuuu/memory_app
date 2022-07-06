@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:giff_dialog/giff_dialog.dart';
 import 'package:memory_app/parts/battle/turn_text.dart';
-import 'package:provider/provider.dart';
 import '../../parts/game/info_card.dart';
 import '../../utils/game_utils.dart';
-import 'battle_view_model.dart';
 
 class BattleScreen extends StatefulWidget {
   const BattleScreen({Key? key}) : super(key: key);
@@ -14,6 +13,77 @@ class BattleScreen extends StatefulWidget {
 
 class _BattleScreenState extends State<BattleScreen> {
   final Game _game = Game();
+  int score1 = 0;
+  int score2 = 0;
+  bool isCount = false;
+  bool isTurn = false;
+
+  void reset() {
+    score1 = 0;
+    score2 = 0;
+  }
+
+  void addScore() {
+    if (isTurn) {
+      score1 += 100;
+    } else {
+      score2 += 100;
+    }
+  }
+
+  void changeTurn() {
+    if (isTurn) {
+      isTurn = false;
+    } else {
+      isTurn = true;
+    }
+  }
+
+  void checkClear(BuildContext context) {
+    if (score1 + score2 == 800) {
+      showDialog(
+        context: context,
+        builder: (_) => NetworkGiffDialog(
+          image: Image.network(
+            "https://media.giphy.com/media/xUOrwiqZxXUiJewDrq/giphy.gif",
+            fit: BoxFit.cover,
+          ),
+          entryAnimation: EntryAnimation.topLeft,
+          title: const Text(
+            'Finish Game!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w600),
+          ),
+          description: const Text(
+            'Please try again!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          buttonCancelText: const Text(
+            'Try Again',
+            style: TextStyle(color: Colors.white),
+          ),
+          buttonOkText: const Text(
+            'Go To Title',
+            style: TextStyle(color: Colors.white),
+          ),
+          onOkButtonPressed: () {
+            reset();
+            Game().initGame();
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          onCancelButtonPressed: () {
+            reset();
+            Game().initGame();
+          },
+        ),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -23,7 +93,6 @@ class _BattleScreenState extends State<BattleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<BattleViewModel>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -36,8 +105,8 @@ class _BattleScreenState extends State<BattleScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TurnText(isYourTurn: viewModel.isTurn),
-                  InfoCard(title: "スコア", info: "${viewModel.score1}"),
+                  TurnText(isYourTurn: isTurn),
+                  InfoCard(title: "スコア", info: "${score1}"),
                 ],
               ),
             ),
@@ -57,24 +126,20 @@ class _BattleScreenState extends State<BattleScreen> {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        // viewModel.checkCount();
                         _game.gameImg![index] = _game.cardsList[index];
                         _game.matchCheck.add({index: _game.cardsList[index]});
                       });
                       if (_game.matchCheck.length == 2) {
-                        if (_game.matchCheck[0].values.first ==
-                            _game.matchCheck[1].values.first) {
-                          viewModel.addScore();
+                        if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
+                          addScore();
                           _game.matchCheck.clear();
-                          viewModel.checkClear(context);
+                          checkClear(context);
                         } else {
                           Future.delayed(const Duration(milliseconds: 500), () {
-                            viewModel.changeTurn();
+                            changeTurn();
                             setState(() {
-                              _game.gameImg![_game.matchCheck[0].keys.first] =
-                                  _game.hiddenCardPath;
-                              _game.gameImg![_game.matchCheck[1].keys.first] =
-                                  _game.hiddenCardPath;
+                              _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardPath;
+                              _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardPath;
                               _game.matchCheck.clear();
                             });
                           });
@@ -96,8 +161,8 @@ class _BattleScreenState extends State<BattleScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                TurnText(isYourTurn: !viewModel.isTurn),
-                InfoCard(title: "スコア", info: "${viewModel.score2}"),
+                TurnText(isYourTurn: !isTurn),
+                InfoCard(title: "スコア", info: "$score2"),
               ],
             ),
           ],
