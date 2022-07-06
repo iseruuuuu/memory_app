@@ -55,8 +55,9 @@ class _GameScreenState extends State<GameScreen> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 1.5,
+            height: MediaQuery.of(context).size.width,
             child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 crossAxisSpacing: 16,
