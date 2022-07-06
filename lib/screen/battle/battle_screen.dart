@@ -31,19 +31,19 @@ class _BattleScreenState extends State<BattleScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 80),
             RotationTransition(
               turns: const AlwaysStoppedAnimation(180 / 360),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  InfoCard(title: "スコア", info: "${viewModel.score1}"),
                   TurnText(isYourTurn: viewModel.isTurn),
+                  InfoCard(title: "スコア", info: "${viewModel.score1}"),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            Expanded(
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,7 +62,8 @@ class _BattleScreenState extends State<BattleScreen> {
                         _game.matchCheck.add({index: _game.cardsList[index]});
                       });
                       if (_game.matchCheck.length == 2) {
-                        if (_game.matchCheck[0].values.first == _game.matchCheck[1].values.first) {
+                        if (_game.matchCheck[0].values.first ==
+                            _game.matchCheck[1].values.first) {
                           viewModel.addScore();
                           _game.matchCheck.clear();
                           viewModel.checkClear(context);
@@ -70,8 +71,10 @@ class _BattleScreenState extends State<BattleScreen> {
                           Future.delayed(const Duration(milliseconds: 500), () {
                             viewModel.changeTurn();
                             setState(() {
-                              _game.gameImg![_game.matchCheck[0].keys.first] = _game.hiddenCardPath;
-                              _game.gameImg![_game.matchCheck[1].keys.first] = _game.hiddenCardPath;
+                              _game.gameImg![_game.matchCheck[0].keys.first] =
+                                  _game.hiddenCardPath;
+                              _game.gameImg![_game.matchCheck[1].keys.first] =
+                                  _game.hiddenCardPath;
                               _game.matchCheck.clear();
                             });
                           });
@@ -90,7 +93,6 @@ class _BattleScreenState extends State<BattleScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -98,7 +100,6 @@ class _BattleScreenState extends State<BattleScreen> {
                 InfoCard(title: "スコア", info: "${viewModel.score2}"),
               ],
             ),
-            const SizedBox(height: 80),
           ],
         ),
       ),
